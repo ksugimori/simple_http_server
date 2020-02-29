@@ -29,4 +29,5 @@ Gem::Specification.new do |spec|
 
   # dependencies
   spec.add_development_dependency "rspec", "~> 3.9.0"
+  spec.add_dependency "thor"
 end
