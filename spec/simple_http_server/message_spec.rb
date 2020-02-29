@@ -1,4 +1,4 @@
-require "simple_http_server/message"
+require "simple_http_server"
 
 describe SimpleHttpServer::Message::HttpRequest do
   it "can parse GET request" do
@@ -29,5 +29,10 @@ describe SimpleHttpServer::Message::HttpRequest do
     expect(patch_request.http_method).to eql(:patch)
     expect(delete_request.http_method).to eql(:delete)
     expect(head_request.http_method).to eql(:head)
+  end
+
+  it "throw an InvalidRequestError" do
+    request_line = "GET /hoge" # version 指定が無い
+    expect { SimpleHttpServer::Message.parse_request(request_line) }.to raise_error(SimpleHttpServer::InvalidRequestError)
   end
 end

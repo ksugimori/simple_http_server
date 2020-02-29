@@ -10,7 +10,7 @@ module SimpleHttpServer
     def self.parse_request(request_line)
       m = REQUEST_LINE_PATTERN.match(request_line)
 
-      raise ParseException, "cannot parse request line: #{request_line}" if m.nil?
+      raise InvalidRequestError, "cannot parse request line: #{request_line}" if m.nil?
 
       method = m[:method].downcase.to_sym
       target = m[:target]
