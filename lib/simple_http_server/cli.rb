@@ -15,9 +15,6 @@ module SimpleHttpServer
     desc "start", "start server"
     # サーバを起動する
     def start()
-      # Ctrl+C で終了
-      Signal.trap(:INT) { puts "Bye!"; exit! }
-
       port = options[:port] || DEFAULT_PORT
       docroot = options[:docroot] || DEFAULT_DOCROOT
 
