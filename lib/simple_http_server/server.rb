@@ -44,9 +44,13 @@ module SimpleHttpServer
     # @param [HttpRequest] request HTTPリクエスト
     # @param [HttpResponse] response HTTPレスポンス
     def access_log(request, response)
-      p response
       request_line = "#{request.http_method.to_s.upcase} #{request.target} #{request.version}"
       puts %Q{[#{Time.now}] "#{request_line}" #{response.status_code} #{response.reason_phrase}}
+
+      unless response.err.nil?
+        puts response.err
+        puts response.err.backtrace
+      end
     end
   end
 end
