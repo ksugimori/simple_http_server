@@ -4,6 +4,8 @@ require "simple_http_server/message"
 require "simple_http_server/server"
 require "simple_http_server/cli"
 
+# Ruby, HTTP 学習用のHTTPサーバ
+# @author ksugimori
 module SimpleHttpServer
   class Error < StandardError; end
 

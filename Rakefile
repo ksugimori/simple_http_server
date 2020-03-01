@@ -1,5 +1,5 @@
 require "bundler/gem_tasks"
-require "rake/testtask"
+require "yard"
 
 begin
   require "rspec/core/rake_task"
@@ -9,4 +9,8 @@ begin
   task :default => :spec
 rescue LoadError
   # no rspec available
+end
+
+YARD::Rake::YardocTask.new do |t|
+  t.files = ["lib/**/*.rb"]
 end
