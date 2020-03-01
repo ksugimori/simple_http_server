@@ -14,11 +14,13 @@ module SimpleHttpServer
     # 停止させる場合は Ctrl+C などで割り込みが必要です。
     # @param [Integer] port ポート番号
     def listen(port)
-      # 終了処理
-      Signal.trap(:INT) { puts "Bye!"; exit! }
+      @port = port
 
-      socket = TCPServer.open(port)
-      puts "Server is starting on port #{port}"
+      # 終了処理
+      Signal.trap(:INT) { shutdown() }
+
+      socket = TCPServer.open(@port)
+      startup_message()
 
       loop do
         Thread.start(socket.accept) do |client|
@@ -43,6 +45,23 @@ module SimpleHttpServer
           end
         end
       end
+    end
+
+    # 起動時のメッセージを出力する
+    def startup_message()
+      puts "============================================="
+      puts " simple http server ver. #{VERSION}"
+      puts "---------------------------------------------"
+      puts " document root: #{ApplicationContext.instance.document_root}"
+      puts " port         : #{@port}"
+      puts "============================================="
+    end
+
+    # 終了時のメッセージを表示し、サーバを停止する。
+    def shutdown()
+      puts
+      puts "Bye!"
+      exit!
     end
 
     # アクセスログを出力する。
