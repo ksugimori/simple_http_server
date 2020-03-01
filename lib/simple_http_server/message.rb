@@ -1,6 +1,9 @@
 module SimpleHttpServer
   # HTTP メッセージ関連のモジュール
   module Message
+    # メッセージの改行文字
+    CRLF = "\r\n"
+
     # 認識可能なHTTPメソッド
     HTTP_METHOD = [:get, :put, :post, :patch, :delete, :head]
 
@@ -8,7 +11,7 @@ module SimpleHttpServer
     # @param [String] リクエストライン
     # @raise [InvalidRequestError] リクエストラインがパースできない場合
     # @return [HttpRequest] HTTPリクエスト
-    def self.parse_request(request_line)
+    def parse_request(request_line)
       m = /^(?<method>\S+) (?<target>\S+) (?<version>\S+)$/.match(request_line)
 
       raise InvalidRequestError, "cannot parse request line: #{request_line}" if m.nil?
@@ -19,6 +22,8 @@ module SimpleHttpServer
 
       HttpRequest.new(method, target, version)
     end
+
+    module_function :parse_request
 
     # HTTP リクエスト
     class HttpRequest
@@ -63,6 +68,14 @@ module SimpleHttpServer
       # @return [String] メッセージ
       def reason_phrase
         @@statuses[@status][:phrase]
+      end
+
+      # シリアライズする
+      # @return レスポンス文字列
+      def serialize()
+        result = "#{status_code} #{reason_phrase}" + CRLF
+        result << CRLF
+        result << "#{@body}"
       end
     end
   end

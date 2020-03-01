@@ -28,6 +28,8 @@ module SimpleHttpServer
             response = Handler.handle(request)
 
             access_log(request, response)
+
+            client.puts response.serialize()
           rescue ApplicationError => e
             p e.backtrace
             Thread.exit
