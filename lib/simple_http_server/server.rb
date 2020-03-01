@@ -1,5 +1,4 @@
 require "socket"
-require "date"
 
 module SimpleHttpServer
   # HTTP サーバ
@@ -8,6 +7,7 @@ module SimpleHttpServer
     # @param [String] document_root ドキュメントルートのパス
     def initialize(document_root)
       ApplicationContext.instance.document_root = document_root
+      @logger = Logger.new
     end
 
     # サーバを起動し、指定したポートで接続待ちを行う。
@@ -46,16 +46,12 @@ module SimpleHttpServer
     end
 
     # アクセスログを出力する。
-    # @param [HttpRequest] req HTTPリクエスト
-    # @param [HttpResponse] res HTTPレスポンス
-    def access_log(req, res)
-      request_line = "#{req.http_method.to_s.upcase} #{req.target} #{req.version}"
-      puts %Q{[#{Time.now}] "#{request_line}" #{res.status_code} #{res.reason_phrase}}
-
-      unless res.err.nil?
-        puts res.err
-        puts res.err.backtrace
-      end
+    # @param [HttpRequest] request HTTPリクエスト
+    # @param [HttpResponse] response HTTPレスポンス
+    def access_log(request, response)
+      request_line = "#{request.http_method.to_s.upcase} #{request.target} #{request.version}"
+      status_line = "#{response.status_code} #{response.reason_phrase}"
+      @logger.log(%Q{"#{request_line}" #{status_line}}, response.err)
     end
   end
 end
