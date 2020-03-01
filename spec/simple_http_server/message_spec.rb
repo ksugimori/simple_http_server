@@ -41,6 +41,7 @@ describe SimpleHttpServer::Message::HttpResponse do
     expect(response.status).to eql(:ok)
     expect(response.status_code).to eql(200)
     expect(response.reason_phrase).to eql("OK")
+    expect(response.version).to eql("HTTP/1.1")
     expect(response.body).to be_nil
   end
 
@@ -49,6 +50,7 @@ describe SimpleHttpServer::Message::HttpResponse do
     expect(response.status).to eql(:bad_request)
     expect(response.status_code).to eql(400)
     expect(response.reason_phrase).to eql("Bad Request")
+    expect(response.version).to eql("HTTP/1.1")
     expect(response.body).to be_nil
   end
 

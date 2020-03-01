@@ -42,7 +42,7 @@ module SimpleHttpServer
 
     # HTTP レスポンス
     class HttpResponse
-      attr_reader :status, :body
+      attr_reader :status, :body, :header, :version
 
       @@statuses = {
         ok: { code: 200, phrase: "OK" },
@@ -53,9 +53,12 @@ module SimpleHttpServer
       # 初期化
       # @param [Symbol] status HTTPステータス
       # @param [String] body レスポンスボディ
-      def initialize(status = :ok, body = nil)
+      # @param [String] version HTTPバージョン
+      def initialize(status = :ok, body = nil, version = "HTTP/1.1")
         @status = status
         @body = body
+        @version = version
+        @header = HttpHeader.new
       end
 
       # ステータスコードを取得する
@@ -73,7 +76,10 @@ module SimpleHttpServer
       # シリアライズする
       # @return レスポンス文字列
       def serialize()
-        result = "#{status_code} #{reason_phrase}" + CRLF
+        result = "#{@version} #{status_code} #{reason_phrase}" + CRLF
+        @header.lines.each do |line|
+          result << line + CRLF
+        end
         result << CRLF
         result << "#{@body}"
       end
