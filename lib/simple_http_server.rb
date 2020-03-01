@@ -13,5 +13,11 @@ require "simple_http_server/cli"
 module SimpleHttpServer
   class Error < StandardError; end
 
+  # デフォルトポート
+  DEFAULT_PORT = 3000
+
+  # デフォルトのドキュメントルート
+  DEFAULT_DOCROOT = "/var/www"
+
   # Your code goes here...
 end

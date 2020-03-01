@@ -14,6 +14,8 @@ module SimpleHttpServer
         @hash = {}
       end
 
+      # ヘッダー行のリストを作成する
+      # @return [Array<String>] ヘッダー行文字列のリスト
       def lines
         @hash.map { |k, v| "#{k}: #{v}" }
       end
