@@ -42,7 +42,7 @@ module SimpleHttpServer
 
     # HTTP レスポンス
     class HttpResponse
-      attr_reader :status, :body, :header, :version
+      attr_accessor :status, :body, :header, :version
 
       @@statuses = {
         ok: { code: 200, phrase: "OK" },

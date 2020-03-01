@@ -65,4 +65,22 @@ describe SimpleHttpServer::Message::HttpResponse do
     expect(response.status).to eql(:ok)
     expect(response.body).to include("<body>hoge</body>")
   end
+
+  it "HTTPレスポンスとしてシリアライズできること" do
+    response = SimpleHttpServer::Message::HttpResponse.new(:ok)
+    response.header["Content-Type"] = "text/plain"
+    response.header["Cookie"] = "hoge"
+    response.body = "Hello world!"
+    response.version = "HTTP/1.1"
+
+    expected_string = <<~EOT.gsub("\n", "\r\n").chomp
+      HTTP/1.1 200 OK
+      Content-Type: text/plain
+      Cookie: hoge
+
+      Hello world!
+    EOT
+
+    expect(response.serialize).to eql(expected_string)
+  end
 end
