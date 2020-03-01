@@ -11,7 +11,7 @@ module SimpleHttpServer
 
     # リクエストメソッドに応じたハンドラを返す
     # @param [Symbol] http_method HTTPメソッド
-    # @param [RequestHandler] リクエストハンドラ
+    # @return [RequestHandler] リクエストハンドラ
     def handlerFactory(http_method)
       case http_method
       when :get

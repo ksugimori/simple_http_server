@@ -8,7 +8,7 @@ module SimpleHttpServer
     HTTP_METHOD = [:get, :put, :post, :patch, :delete, :head]
 
     # リクエストラインをパースして HttpRequest オブジェクトを生成する
-    # @param [String] リクエストライン
+    # @param [String] request_line リクエストライン
     # @raise [InvalidRequestError] リクエストラインがパースできない場合
     # @return [HttpRequest] HTTPリクエスト
     def parse_request(request_line)
