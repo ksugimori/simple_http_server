@@ -7,7 +7,7 @@ module SimpleHttpServer
     # 初期化処理
     # @param [String] document_root ドキュメントルートのパス
     def initialize(document_root)
-      @document_root = document_root
+      ApplicationContext.instance.document_root = document_root
     end
 
     # サーバを起動し、指定したポートで接続待ちを行う。

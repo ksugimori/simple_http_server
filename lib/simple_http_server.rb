@@ -1,4 +1,5 @@
 require "simple_http_server/version"
+require "simple_http_server/application_context"
 require "simple_http_server/errors"
 require "simple_http_server/message"
 require "simple_http_server/http_header"

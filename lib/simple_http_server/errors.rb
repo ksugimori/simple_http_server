@@ -4,4 +4,7 @@ module SimpleHttpServer
 
   # リクエストパースエラー
   class InvalidRequestError < ApplicationError; end
+
+  # ファイルが見つからない場合のエラー
+  class FileNotFoundError < ApplicationError; end
 end

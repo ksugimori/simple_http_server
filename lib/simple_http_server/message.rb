@@ -47,7 +47,8 @@ module SimpleHttpServer
       @@statuses = {
         ok: { code: 200, phrase: "OK" },
         bad_request: { code: 400, phrase: "Bad Request" },
-        not_found: { code: 404, phrase: "Not Found" }
+        not_found: { code: 404, phrase: "Not Found" },
+        internal_server_error: { code: 500, phrase: "Internal Server Error" }
       }
 
       # 初期化
