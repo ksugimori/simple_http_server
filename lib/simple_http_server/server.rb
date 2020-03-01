@@ -17,15 +17,17 @@ module SimpleHttpServer
       # 終了処理
       Signal.trap(:INT) { puts "Bye!"; exit! }
 
-      puts "Server is starting on port #{port}"
       socket = TCPServer.open(port)
+      puts "Server is starting on port #{port}"
 
       loop do
         Thread.start(socket.accept) do |client|
           begin
             request_line = client.gets.chomp
             request = Message.parse_request(request_line)
-            access_log(request)
+            response = Handler.handle(request)
+
+            access_log(request, response)
           rescue ApplicationError => e
             p e.backtrace
             Thread.exit
@@ -38,8 +40,10 @@ module SimpleHttpServer
 
     # アクセスログを出力する。
     # @param [HttpRequest] request HTTPリクエスト
-    def access_log(request)
-      puts "[#{Time.now}] #{request.http_method.to_s.upcase} #{request.target} #{request.version}"
+    # @param [HttpResponse] response HTTPレスポンス
+    def access_log(request, response)
+      request_line = "#{request.http_method.to_s.upcase} #{request.target} #{request.version}"
+      puts %Q{[#{Time.now}] "#{request_line}" #{response.status_code} #{response.reason_phrase}}
     end
   end
 end
