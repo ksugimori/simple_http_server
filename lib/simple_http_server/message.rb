@@ -46,8 +46,10 @@ module SimpleHttpServer
 
       # 初期化
       # @param [Symbol] status HTTPステータス
-      def initialize(status = :ok)
+      # @param [String] body レスポンスボディ
+      def initialize(status = :ok, body = nil)
         @status = status
+        @body = body
       end
 
       # ステータスコードを取得する

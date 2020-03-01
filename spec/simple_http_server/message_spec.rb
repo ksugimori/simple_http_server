@@ -51,4 +51,16 @@ describe SimpleHttpServer::Message::HttpResponse do
     expect(response.reason_phrase).to eql("Bad Request")
     expect(response.body).to be_nil
   end
+
+  it "レスポンスボディをセットできること" do
+    html = <<~EOT
+      <!DOCTYPE html>
+      <html>
+        <body>hoge</body>
+      </html>
+    EOT
+    response = SimpleHttpServer::Message::HttpResponse.new(:ok, html)
+    expect(response.status).to eql(:ok)
+    expect(response.body).to include("<body>hoge</body>")
+  end
 end
