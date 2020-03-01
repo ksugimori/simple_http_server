@@ -17,6 +17,7 @@ module SimpleHttpServer
       when :get
         GetRequestHandler.new
       else
+        raise MethodNotAllowedError
       end
     end
 

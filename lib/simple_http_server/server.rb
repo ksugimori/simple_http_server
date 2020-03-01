@@ -28,11 +28,16 @@ module SimpleHttpServer
             response = Handler.handle(request)
 
             access_log(request, response)
-
-            client.puts response.serialize()
+            client.puts response.serialize
           rescue ApplicationError => e
-            p e.backtrace
-            Thread.exit
+            if e.is_a? MethodNotAllowedError
+              response = Message::HttpResponse.new(:method_not_allowed)
+            else
+              response = Message::HttpResponse.new(:internal_server_error)
+            end
+
+            access_log(request, response)
+            client.puts response.serialize
           ensure
             client.close
           end
@@ -41,15 +46,15 @@ module SimpleHttpServer
     end
 
     # アクセスログを出力する。
-    # @param [HttpRequest] request HTTPリクエスト
-    # @param [HttpResponse] response HTTPレスポンス
-    def access_log(request, response)
-      request_line = "#{request.http_method.to_s.upcase} #{request.target} #{request.version}"
-      puts %Q{[#{Time.now}] "#{request_line}" #{response.status_code} #{response.reason_phrase}}
+    # @param [HttpRequest] req HTTPリクエスト
+    # @param [HttpResponse] res HTTPレスポンス
+    def access_log(req, res)
+      request_line = "#{req.http_method.to_s.upcase} #{req.target} #{req.version}"
+      puts %Q{[#{Time.now}] "#{request_line}" #{res.status_code} #{res.reason_phrase}}
 
-      unless response.err.nil?
-        puts response.err
-        puts response.err.backtrace
+      unless res.err.nil?
+        puts res.err
+        puts res.err.backtrace
       end
     end
   end

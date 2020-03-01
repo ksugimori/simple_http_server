@@ -31,7 +31,7 @@ module SimpleHttpServer
           data = File.read(file_path)
 
           response = Message::HttpResponse.new(:ok, data)
-          response.header["Content-Type"] = content_type(file_path)
+          response.header["Content-Type"] = mime_type_of(file_path)
           response.header["Content-Length"] = data.bytesize
         rescue Errno::ENOENT
           # ファイルが存在しない場合は 404
@@ -45,7 +45,10 @@ module SimpleHttpServer
         return response
       end
 
-      def content_type(file_path)
+      # ファイルの拡張子に対応した MIME Type を返します。
+      # @param [String] file_path ファイルパス
+      # @return MIME type
+      def mime_type_of(file_path)
         @@mime_type[File.extname(file_path)] || "text/plain"
       end
 
