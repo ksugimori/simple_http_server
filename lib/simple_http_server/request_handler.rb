@@ -23,8 +23,8 @@ module SimpleHttpServer
       # ドキュメントルート以下のファイルを取得する。
       def handle(request)
         begin
-          context = ApplicationContext.instance
-          file_path = File.join(context.document_root, request.target)
+          document_root = Thread.current[:docroot] || DEFAULT_DOCROOT
+          file_path = File.join(document_root, request.target)
 
           file_path = index_file_if_directory(file_path)
 

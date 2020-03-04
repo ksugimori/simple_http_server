@@ -6,7 +6,7 @@ module SimpleHttpServer
     # 初期化処理
     # @param [String] document_root ドキュメントルートのパス
     def initialize(document_root)
-      ApplicationContext.instance.document_root = document_root
+      @document_root = document_root
       @logger = Logger.new
     end
 
@@ -24,6 +24,7 @@ module SimpleHttpServer
 
       loop do
         Thread.start(socket.accept) do |client|
+          Thread.current[:docroot] = @document_root
           begin
             request_line = client.gets.chomp
             request = Message.parse_request(request_line)
@@ -52,7 +53,7 @@ module SimpleHttpServer
       puts "============================================="
       puts " simple http server ver. #{VERSION}"
       puts "---------------------------------------------"
-      puts " document root: #{ApplicationContext.instance.document_root}"
+      puts " document root: #{@document_root}"
       puts " port         : #{@port}"
       puts "============================================="
     end
