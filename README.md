@@ -1,28 +1,26 @@
 # SimpleHttpServer
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/simple_http_server`. To experiment with that code, run `bin/console` for an interactive prompt.
+HTTP と Ruby 勉強用に作成した HTTP サーバです。
+GET リクエストにのみ対応しています。
 
-TODO: Delete this and the text above, and describe your gem
+## 注意
 
-## Installation
+あくまでも学習目的に作成したものなので、多数の脆弱性が存在します。本番環境では **絶対に** 使用しないでください。
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'simple_http_server'
-```
-
-And then execute:
-
-    $ bundle install
-
-Or install it yourself as:
-
-    $ gem install simple_http_server
 
 ## Usage
 
-TODO: Write usage instructions here
+`simple_http_server start` でサーバが起動します。
+ポート番号、ドキュメントルートはオプションで変更可能。デフォルトでは `-p 3000 -r /va/www` として起動します。
+
+```
+Usage:
+  simple_http_server start
+
+Options:
+  p, [--port=<port>]          
+  r, [--docroot=<directory>] 
+```
 
 ## Development
 
