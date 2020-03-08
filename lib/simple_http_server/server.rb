@@ -26,7 +26,7 @@ module SimpleHttpServer
         Thread.start(socket.accept) do |client|
           Thread.current[:docroot] = @document_root
           begin
-            request_line = client.gets.chomp
+            request_line = client.gets&.chomp
             request = Message.parse_request(request_line)
             response = Handler.handle(request)
 

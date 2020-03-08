@@ -1,4 +1,5 @@
 require "date"
+require "rainbow"
 
 module SimpleHttpServer
 
@@ -9,11 +10,11 @@ module SimpleHttpServer
     # @param [String] message メッセージ
     # @param [Error] err エラー
     def log(message, err = nil)
-      puts "[#{Time.now}] #{message}"
+      puts "[#{Rainbow(Time.now).cyan}] #{message}"
 
       if err
-        puts err
-        puts err.backtrace
+        puts Rainbow(err).red
+        puts Rainbow(err.backtrace).red
       end
     end
   end
