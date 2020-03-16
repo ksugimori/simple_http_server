@@ -8,11 +8,14 @@ module SimpleHttpServer
       # @param [Symbol] status HTTPステータス
       # @param [String] body レスポンスボディ
       # @param [String] version HTTPバージョン
-      def initialize(status = :ok, body = nil, version = "HTTP/1.1")
+      # @yield [HttpResponse] 初期化処理
+      def initialize(status = :ok, body = nil, version = "HTTP/1.1", &block)
         @status = status
         @body = body
         @version = version
         @header = HttpHeader.new
+
+        yield(self) if block_given?
       end
 
       # ステータスコードを取得する

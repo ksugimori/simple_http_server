@@ -29,6 +29,16 @@ describe SimpleHttpServer::Message::HttpResponse do
     expect(response.body).to include("<body>hoge</body>")
   end
 
+  it "レスポンスヘッダが保持されること" do
+    response = SimpleHttpServer::Message::HttpResponse.new(:ok) do |r|
+      r.header["Content-Length"] = 99
+      r.header["Set-Cookie"] = "hoge=fuga"
+    end
+
+    expect(response.header["Content-Length"]).to eql(99)
+    expect(response.header["Set-Cookie"]).to eql("hoge=fuga")
+  end
+
   it "HTTPレスポンスとしてシリアライズできること" do
     response = SimpleHttpServer::Message::HttpResponse.new(:ok)
     response.header["Content-Type"] = "text/plain"
