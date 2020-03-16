@@ -4,14 +4,6 @@ module SimpleHttpServer
     class HttpResponse
       attr_accessor :status, :body, :header, :version, :err
 
-      @@statuses = {
-        ok: { code: 200, phrase: "OK" },
-        bad_request: { code: 400, phrase: "Bad Request" },
-        not_found: { code: 404, phrase: "Not Found" },
-        method_not_allowed: { code: 405, phrase: "Method Not Allowed" },
-        internal_server_error: { code: 500, phrase: "Internal Server Error" }
-      }
-
       # 初期化
       # @param [Symbol] status HTTPステータス
       # @param [String] body レスポンスボディ
@@ -26,13 +18,13 @@ module SimpleHttpServer
       # ステータスコードを取得する
       # @return [Integer] ステータスコード
       def status_code
-        @@statuses[@status][:code]
+        HTTP_STATUS[@status][:code]
       end
 
       # メッセージを取得する
       # @return [String] メッセージ
       def reason_phrase
-        @@statuses[@status][:phrase]
+        HTTP_STATUS[@status][:phrase]
       end
 
       # シリアライズする
