@@ -27,16 +27,16 @@ module SimpleHttpServer
           Thread.current[:docroot] = @document_root
           begin
             request_line = client.gets&.chomp
-            request = Message.parse_request(request_line)
+            request = Parser.parse_request(request_line)
             response = Handler.handle(request)
 
             access_log(request, response)
             client.puts response.serialize
           rescue ApplicationError => e
             if e.is_a? MethodNotAllowedError
-              response = Message::HttpResponse.new(:method_not_allowed)
+              response = HttpResponse.new(:method_not_allowed)
             else
-              response = Message::HttpResponse.new(:internal_server_error)
+              response = HttpResponse.new(:internal_server_error)
             end
 
             access_log(request, response)

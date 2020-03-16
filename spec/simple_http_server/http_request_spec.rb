@@ -1,6 +1,6 @@
-describe SimpleHttpServer::Message::HttpRequest do
+describe SimpleHttpServer::HttpRequest do
   it "メソッド、パス、バージョンを保持できること" do
-    request = SimpleHttpServer::Message::HttpRequest.new(:get, "/hoge/fuga", "HTTP/2")
+    request = SimpleHttpServer::HttpRequest.new(:get, "/hoge/fuga", "HTTP/2")
 
     expect(request.http_method).to eql(:get)
     expect(request.target).to eql("/hoge/fuga")
@@ -8,7 +8,7 @@ describe SimpleHttpServer::Message::HttpRequest do
   end
 
   it "リクエストヘッダ、ボディが保持されること" do
-    request = SimpleHttpServer::Message::HttpRequest.new(:get, "/foo", "HTTP/1.1") do |r|
+    request = SimpleHttpServer::HttpRequest.new(:get, "/foo", "HTTP/1.1") do |r|
       r.header["Content-Length"] = 10
       r.header["User-Agent"] = "hoge"
       r.body = "This is a test."

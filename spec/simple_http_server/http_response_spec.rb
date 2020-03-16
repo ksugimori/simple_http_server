@@ -1,6 +1,6 @@
-describe SimpleHttpServer::Message::HttpResponse do
+describe SimpleHttpServer::HttpResponse do
   it "デフォルトで 200 OK として初期化されること" do
-    response = SimpleHttpServer::Message::HttpResponse.new
+    response = SimpleHttpServer::HttpResponse.new
     expect(response.status).to eql(:ok)
     expect(response.status_code).to eql(200)
     expect(response.reason_phrase).to eql("OK")
@@ -9,7 +9,7 @@ describe SimpleHttpServer::Message::HttpResponse do
   end
 
   it "ステータスを指定して初期化できること" do
-    response = SimpleHttpServer::Message::HttpResponse.new(:bad_request)
+    response = SimpleHttpServer::HttpResponse.new(:bad_request)
     expect(response.status).to eql(:bad_request)
     expect(response.status_code).to eql(400)
     expect(response.reason_phrase).to eql("Bad Request")
@@ -24,13 +24,13 @@ describe SimpleHttpServer::Message::HttpResponse do
         <body>hoge</body>
       </html>
     EOT
-    response = SimpleHttpServer::Message::HttpResponse.new(:ok, html)
+    response = SimpleHttpServer::HttpResponse.new(:ok, html)
     expect(response.status).to eql(:ok)
     expect(response.body).to include("<body>hoge</body>")
   end
 
   it "レスポンスヘッダが保持されること" do
-    response = SimpleHttpServer::Message::HttpResponse.new(:ok) do |r|
+    response = SimpleHttpServer::HttpResponse.new(:ok) do |r|
       r.header["Content-Length"] = 99
       r.header["Set-Cookie"] = "hoge=fuga"
     end
@@ -40,7 +40,7 @@ describe SimpleHttpServer::Message::HttpResponse do
   end
 
   it "HTTPレスポンスとしてシリアライズできること" do
-    response = SimpleHttpServer::Message::HttpResponse.new(:ok)
+    response = SimpleHttpServer::HttpResponse.new(:ok)
     response.header["Content-Type"] = "text/plain"
     response.header["Cookie"] = "hoge"
     response.body = "Hello world!"
