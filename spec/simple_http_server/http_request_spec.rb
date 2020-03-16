@@ -6,4 +6,16 @@ describe SimpleHttpServer::Message::HttpRequest do
     expect(request.target).to eql("/hoge/fuga")
     expect(request.version).to eql("HTTP/2")
   end
+
+  it "リクエストヘッダ、ボディが保持されること" do
+    request = SimpleHttpServer::Message::HttpRequest.new(:get, "/foo", "HTTP/1.1") do |r|
+      r.header["Content-Length"] = 10
+      r.header["User-Agent"] = "hoge"
+      r.body = "This is a test."
+    end
+
+    expect(request.header["Content-Length"]).to eql(10)
+    expect(request.header["User-Agent"]).to eql("hoge")
+    expect(request.body).to eql("This is a test.")
+  end
 end
