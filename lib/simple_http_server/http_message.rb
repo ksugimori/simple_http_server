@@ -1,7 +1,23 @@
+require "forwardable"
+
 module SimpleHttpServer
   # HTTP メッセージ
-  class Message
-    attr_accessor :header, :body
+  class HttpMessage
+    attr_accessor :body
+    extend Forwardable
+
+    # ヘッダーの管理は Hash に移譲
+    def_delegators :@hash, :[], :[]=
+
+    def initialize()
+      @hash = {}
+    end
+
+    # ヘッダー行のリストを作成する
+    # @return [Array<String>] ヘッダー行文字列のリスト
+    def header_lines
+      @hash.map { |k, v| "#{k}: #{v}" }
+    end
 
     # メッセージの改行文字
     CRLF = "\r\n"

@@ -31,18 +31,18 @@ describe SimpleHttpServer::HttpResponse do
 
   it "レスポンスヘッダが保持されること" do
     response = SimpleHttpServer::HttpResponse.new(:ok) do |r|
-      r.header["Content-Length"] = 99
-      r.header["Set-Cookie"] = "hoge=fuga"
+      r["Content-Length"] = 99
+      r["Set-Cookie"] = "hoge=fuga"
     end
 
-    expect(response.header["Content-Length"]).to eql(99)
-    expect(response.header["Set-Cookie"]).to eql("hoge=fuga")
+    expect(response["Content-Length"]).to eql(99)
+    expect(response["Set-Cookie"]).to eql("hoge=fuga")
   end
 
   it "HTTPレスポンスとしてシリアライズできること" do
     response = SimpleHttpServer::HttpResponse.new(:ok)
-    response.header["Content-Type"] = "text/plain"
-    response.header["Cookie"] = "hoge"
+    response["Content-Type"] = "text/plain"
+    response["Cookie"] = "hoge"
     response.body = "Hello world!"
     response.version = "HTTP/1.1"
 

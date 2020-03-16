@@ -1,6 +1,8 @@
+require_relative "http_message"
+
 module SimpleHttpServer
   # HTTP リクエスト
-  class HttpRequest < Message
+  class HttpRequest < HttpMessage
     attr_reader :http_method, :target, :version
 
     # 初期化
@@ -9,10 +11,10 @@ module SimpleHttpServer
     # @param [String] version HTTPバージョン
     # @yield [HttpRequest] 初期化処理
     def initialize(http_method, target, version, &block)
+      super()
       @http_method = http_method
       @target = target
       @version = version
-      @header = HttpHeader.new
 
       yield(self) if block_given?
     end

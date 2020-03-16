@@ -1,6 +1,8 @@
+require_relative "http_message"
+
 module SimpleHttpServer
   # HTTP レスポンス
-  class HttpResponse < Message
+  class HttpResponse < HttpMessage
     attr_accessor :status, :version, :err
 
     # 初期化
@@ -9,10 +11,10 @@ module SimpleHttpServer
     # @param [String] version HTTPバージョン
     # @yield [HttpResponse] 初期化処理
     def initialize(status = :ok, body = nil, version = "HTTP/1.1", &block)
+      super()
       @status = status
       @body = body
       @version = version
-      @header = HttpHeader.new
 
       yield(self) if block_given?
     end
@@ -33,7 +35,7 @@ module SimpleHttpServer
     # @return レスポンス文字列
     def serialize()
       result = "#{@version} #{status_code} #{reason_phrase}" + CRLF
-      @header.lines.each do |line|
+      header_lines.each do |line|
         result << line + CRLF
       end
       result << CRLF

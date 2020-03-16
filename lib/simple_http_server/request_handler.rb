@@ -31,8 +31,8 @@ module SimpleHttpServer
           data = File.read(file_path)
 
           response = HttpResponse.new(:ok, data) do |r|
-            r.header["Content-Type"] = content_type(file_path)
-            r.header["Content-Length"] = data.bytesize
+            r["Content-Type"] = content_type(file_path)
+            r["Content-Length"] = data.bytesize
           end
         rescue Errno::ENOENT
           # ファイルが存在しない場合は 404
