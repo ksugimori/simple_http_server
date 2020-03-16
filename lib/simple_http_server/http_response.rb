@@ -34,11 +34,11 @@ module SimpleHttpServer
     # シリアライズする
     # @return レスポンス文字列
     def serialize()
-      result = "#{@version} #{status_code} #{reason_phrase}" + CRLF
-      header_lines.each do |line|
-        result << line + CRLF
+      result = "#{@version} #{status_code} #{reason_phrase}" << CRLF
+      headers() do |name, value|
+        result << "#{name}: #{value}" << CRLF
       end
-      result << CRLF
+      result << CRLF # ヘッダとボディの区切りに空行が必要
       result << "#{@body}"
     end
   end

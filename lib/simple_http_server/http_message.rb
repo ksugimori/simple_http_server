@@ -2,25 +2,24 @@ require "forwardable"
 
 module SimpleHttpServer
   # HTTP メッセージ
+  # ヘッダやボディなどリクエストとレスポンスに共通するデータに関係する処理を規定します。
   class HttpMessage
     attr_accessor :body
-    extend Forwardable
 
     # ヘッダーの管理は Hash に移譲
-    def_delegators :@hash, :[], :[]=
+    extend Forwardable
+    def_delegators :@header, :[], :[]=
+    def_delegator :@header, :each, :headers
 
     def initialize()
-      @hash = {}
-    end
-
-    # ヘッダー行のリストを作成する
-    # @return [Array<String>] ヘッダー行文字列のリスト
-    def header_lines
-      @hash.map { |k, v| "#{k}: #{v}" }
+      @header = {}
     end
 
     # メッセージの改行文字
     CRLF = "\r\n"
+
+    # 半角スペース
+    SP = " "
 
     # 認識可能なHTTPメソッド
     HTTP_METHOD = [:get, :put, :post, :patch, :delete, :head]
